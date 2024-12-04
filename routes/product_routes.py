@@ -12,7 +12,7 @@ def add_product():
 
 @products.route('/product/category', methods=['POST'])
 def create_product_category():
-    return create_product_category()
+    return controllers.create_product_category(request)
 
 
 @products.route("/products", methods=["GET"])

@@ -9,6 +9,12 @@ from db import db
 def add_category(request):
     post_data = request.form if request.form else request.json
 
+    category_name = post_data.get('category_name')
+    existing_category = db.session.query(Categories).filter(Categories.category_name == category_name).first()
+
+    if existing_category:
+        return jsonify({"message": "category already exists"}), 400
+
     new_category = Categories.new_category_obj()
     populate_object(new_category, post_data)
 

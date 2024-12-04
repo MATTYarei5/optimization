@@ -9,6 +9,13 @@ from db import db
 def add_company(request):
     post_data = request.form if request.form else request.json
 
+    company_name = post_data.get('company_name')
+
+    company_query = db.session.query(Companies).filter(Companies.company_name == company_name).first()
+
+    if company_query:
+        return jsonify({"message": "company already exists"}), 400
+
     new_company = Companies.new_company_obj()
     populate_object(new_company, post_data)
 

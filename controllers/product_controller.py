@@ -11,6 +11,18 @@ from db import db
 def add_product(request):
     post_data = request.form if request.form else request.json
 
+    product_name = post_data.get('product_name')
+    company_id = post_data.get('company_id')
+
+    existing_product = db.session.query(Products).filter(Products.product_name == product_name).first()
+    company_query = db.session.query(Companies).filter(Companies.company_id == company_id).first()
+
+    if existing_product:
+        return jsonify({"message": "product already exists"}), 400
+
+    if company_query == None:
+        return jsonify({"message": "company does not exist"}), 404
+
     new_product = Products.new_product_obj()
     populate_object(new_product, post_data)
 

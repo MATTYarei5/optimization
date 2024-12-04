@@ -22,7 +22,9 @@ class Companies(db.Model):
 
 class CompaniesSchema(ma.Schema):
     class Meta:
-        fields = ['company_id', 'company_name']
+        fields = ['company_id', 'company_name', 'products']
+
+    products = ma.fields.Nested('ProductsSchema', many=True, exclude=['categories'])
 
 
 company_schema = CompaniesSchema()

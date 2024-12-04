@@ -9,6 +9,12 @@ from db import db
 def add_warranty(request):
     post_data = request.form if request.form else request.json
 
+    product_id = post_data.get('product_id')
+    existing_warranty = db.session.query(Warranties).filter(Warranties.product_id == product_id).first()
+
+    if existing_warranty:
+        return jsonify({"message": "warranty already exists"}), 400
+
     new_warranty = Warranties.new_warranty_obj()
     populate_object(new_warranty, post_data)
 

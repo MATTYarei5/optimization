@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 import controllers
 from lib.authenticate import token_required
 

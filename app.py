@@ -10,7 +10,7 @@ from models.product import Products
 from models.product_category_xref import products_categories_association_table
 from models.company import Companies
 from models.warranty import Warranties
-from models.users import Users
+from models.users import User
 from models.auth_token import AuthTokens
 
 flask_host = os.environ.get("FLASK_HOST")

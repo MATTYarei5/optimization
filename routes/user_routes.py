@@ -1,28 +1,31 @@
-from flask import Blueprint, request
+from flask import request, Blueprint
+
 import controllers
-from lib.authenticate import token_required
-
-user_bp = Blueprint('user_bp', __name__)
 
 
-@user_bp.route('/user', methods=['POST'])
-def create_user_route():
-    return controllers.create_user(request.json)
+user = Blueprint('user', __name__)
 
 
-@user_bp.route('/users', methods=['GET'])
-@token_required
-def read_users_route():
-    return controllers.read_users()
+@user.route("/user", methods=['POST'])
+def add_user():
+    return controllers.add_user(request)
 
 
-@user_bp.route('/user/<id>', methods=['PUT'])
-@token_required
-def update_user_route(id):
-    return controllers.update_user(id, request.json)
+@user.route("/users", methods=['GET'])
+def get_all_users():
+    return controllers.get_all_users()
 
 
-@user_bp.route('/user/delete', methods=['DELETE'])
-@token_required
-def delete_user_route():
-    return controllers.delete_user(request.json)
+@user.route("/user/<user_id>", methods=['GET'])
+def get_user_by_id(user_id):
+    return controllers.get_user_by_id(user_id)
+
+
+@user.route("/user/<user_id>", methods=['PUT'])
+def update_user_by_id(user_id):
+    return controllers.update_user_by_id(request, user_id)
+
+
+@user.route("/user/delete/<user_id>", methods=['DELETE'])
+def delete_user(user_id):
+    return controllers.delete_user(user_id)

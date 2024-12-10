@@ -1,9 +1,25 @@
-from db import db
 import uuid
-from datetime import datetime
+from sqlalchemy.dialects.postgresql import UUID
+import marshmallow as ma
+
+from db import db
 
 
-class AuthToken(db.Model):
-    auth_token = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
-    user_id = db.Column(db.String(36), db.ForeignKey('user.user_id'), nullable=False)
-    expiration = db.Column(db.DateTime, default=datetime.utcnow)
+class AuthTokens(db.Model):
+    __tablename__ = "AuthTokens"
+
+    auth_token = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("User.user_id"), nullable=False)
+    expiration = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, user_id, expiration):
+        self.user_id = user_id
+        self.expiration = expiration
+
+
+class AuthTokenSchema(ma.Schema):
+    class Meta:
+        fields = ['auth_token', 'user_id', 'expiration']
+
+
+auth_token_schema = AuthTokenSchema()
